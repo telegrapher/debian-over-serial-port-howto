@@ -31,5 +31,5 @@ There are three options:
 
 - Create an USB drive and modify its files.
 - Manually modify the CD image.
-- Use debian-cdd to modify the CD image.
+- Use simple-cdd to modify the CD image.
 
