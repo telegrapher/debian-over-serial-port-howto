@@ -33,3 +33,16 @@ There are three options:
 - Manually modify the CD image.
 - Use simple-cdd to modify the CD image.
 
+### Add serial console to an already installed machine.
+
+It is not the main purpose of this document, but since it is pretty easy, here is how to do it:
+
+- In /etc/default/grub find the GRUB_CMDLINE_LINUX option and add:
+```
+"serial=tty0 console=ttyS0,115200n8"
+```
+- Run:
+```
+sudo update-grub
+```
+- Reboot.
