@@ -1,7 +1,7 @@
 # debian-over-serial-port-howto
 How to install Debian in a PC or VM using only serial port communication
 
-## Introduction.
+## Introduction
 
 Those are my personal notes on how to install Debian on a real or virtual machine using only the serial port.
 
@@ -9,11 +9,9 @@ There is a lot of information on how to install Debian on embedded systems using
 
 Although there is plenty of help on how to add a terminal to the serial port, this is usually after the installation. There is not much information on how to start from scratch.
 
-The best source of information I've been able to find is from the [pcengines.info forum](http://pcengines.info/forums/?page=post&id=51C5DE97-2D0E-40E9-BFF7-7F7FE30E18FE).
+The best source of information I've been able to find is from the [pcengines.info forum](http://pcengines.info/forums/?page=post&id=51C5DE97-2D0E-40E9-BFF7-7F7FE30E18FE). In this HOWTO, I'm just consolidating this information, updating it and making it more generic.
 
-In this HOWTO, I'm just consolidating the information, updating it and making it more generic.
-
-## Why.
+## Why
 
 There are three usecases where today (2018) this may be still useful outside the embedded world:
 
@@ -22,7 +20,7 @@ There are three usecases where today (2018) this may be still useful outside the
 
 After installing the machine, console access will be configured too. This can be very handy in case of some failures where SSH would not be available.
 
-## How.
+## How
 
 Installing using the serial port is very easy to do after we know all the details. And those are:
 
@@ -33,12 +31,12 @@ Installing using the serial port is very easy to do after we know all the detail
 
 There are three options:
 
-* [Create an install USB drive and modify its files.](#manually-created-usb-boot-disk.)
-* [Manually create an ISO image.](#manually-created-iso-image.)
-* [Use simple-cdd to create an ISO image.](#automated-iso-image-creation.)
+* [Create an install USB drive and modify its files.](#manually-created-usb-boot-disk)
+* [Manually create an ISO image.](#manually-created-iso-image)
+* [Use simple-cdd to create an ISO image.](#automated-iso-image-creation)
 
 
-## Manually created USB boot disk.
+## Manually created USB boot disk
 
 This is the easiest method, since the process to create an USB image is very easy. It is explained in the [official Debian docs](https://www.debian.org/releases/stretch/amd64/ch04s03.html.en#usb-copy-flexible)
 
@@ -55,7 +53,7 @@ LABEL linux
     PROMPT 1
 ```
 
-## Manually created ISO image.
+## Manually created ISO image
 
 This method will create a new ISO image using the files from the old, and very importantly, keeping the hybrid MBR as the original image, so it can be used to create USB boot disks.
 
@@ -112,7 +110,7 @@ EOF
 xorriso -as mkisofs -r -J -joliet-long -l -cache-inodes -isohybrid-mbr /usr/lib/syslinux/isohdpfx.bin -partition_offset 16 -A "Debian8.2" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o debian-8.2-serial-install.iso ./new/
 ```
 
-## Automated ISO image creation.
+## Automated ISO image creation
 
 This method has the disadvantage of using additional software, adding more complexity, but I find it the best one because:
 
@@ -122,7 +120,7 @@ This method has the disadvantage of using additional software, adding more compl
 - It makes easy to personalize the distribution, in this example I'll take the opportunity to install the non-free firmware.
 
 
-### Add serial console to an already installed machine.
+## Add a serial console to an already installed machine.
 
 It is not the main purpose of this document, but since it is pretty easy, here is how to do it:
 
