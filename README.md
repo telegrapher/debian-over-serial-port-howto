@@ -29,9 +29,10 @@ Installing using the serial port is very easy to do after we know all the detail
 
 There are three options:
 
-- Create an USB drive and modify its files.
-- Manually modify the CD image.
-- Use simple-cdd to modify the CD image.
+* [Create an USB drive and modify its files.](usb_drive.md)
+* [Manually modify the CD image.](manual_iso.md)
+* [Use simple-cdd to modify the CD image.](automated_iso.md)
+
 
 ### Add serial console to an already installed machine.
 
