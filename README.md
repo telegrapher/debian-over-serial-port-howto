@@ -107,7 +107,7 @@ EOF
 
 - Create the iso from the new files
 ```
-xorriso -as mkisofs -r -J -joliet-long -l -cache-inodes -isohybrid-mbr /usr/lib/syslinux/isohdpfx.bin -partition_offset 16 -A "Debian8.2" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o debian-8.2-serial-install.iso ./new/
+xorriso -as mkisofs -r -J -joliet-long -l -cache-inodes -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin -partition_offset 16 -A "Debian9.5" -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o debian-9.5.0-amd64-serial-netinst.iso ./files_new_iso/
 ```
 
 ## Automated ISO image creation
@@ -118,6 +118,58 @@ This method has the disadvantage of using additional software, adding more compl
 - The resulting ISO is smaller than the one in the second method.
 - The software is integrated in Debian, the package name is 'simple-cdd'.
 - It makes easy to personalize the distribution, in this example I'll take the opportunity to install the non-free firmware.
+
+build-simple-ccd works with profiles, and each profile may be composed of different files:
+- conf: The most important, profile-specific settings to be used during the ISO build.
+- preseed: Debconf questions to be loaded if the profile is used.
+- packages: Additional packages installed wihen the profile is selected.
+- downloads: Additional packages provided in the ISO image, but not installed by default.
+- description: One line description of the profile
+- postinst: Profile specific post-install script run in the finish-install phase of the debian-installer
+
+Create the base directories:
+```
+mkdir -p build_image/profiles
+cd build_image
+```
+Create the profile files for the profile 'serial-console':
+```
+cat << EOF >> profiles/serial-console.conf
+# Profile to be included
+profiles="serial-console"
+# Profile to be automatically selected
+auto_profiles="serial-console"
+# Include profile even if it only affects CD build
+build_profiles="serial-console"
+# Components to get from the mirror
+mirror_components="main contrib non-free"
+# Use the serial console
+use_serial_console=true
+EOF
+cat << EOF >> profiles/serial-console.preseed
+# Disable video and enable serial console
+d-i debian-installer/add-kernel-opts string video=off\
+ console=ttyS0,115200
+
+# Load firmware before detecting network cards
+d-i hw-detect/load_firmware boolean true
+d-i netcfg/enable boolean true
+
+# Include non-free debian section
+base-config     apt-setup/non-free      boolean true
+EOF
+
+cat << EOF >> profiles/serial-console.description
+Homemade Debian GNU/Linux Stretch installer with serial console support.
+EOF
+```
+
+```
+build-simple-cdd --conf profiles/serial-console.conf --dist stretch
+
+```
+
+#### Beware, if you change the configuration, delete the auto-created images/ and tmp/ folders to avoid errors.
 
 
 ## Add a serial console to an already installed machine.
