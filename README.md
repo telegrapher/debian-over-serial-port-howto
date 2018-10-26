@@ -161,15 +161,14 @@ mirror_components="main contrib non-free"
 # Use the serial console
 use_serial_console=true
 EOF
+
 cat << EOF >> profiles/serial-console.preseed
 # Disable video and enable serial console
 d-i debian-installer/add-kernel-opts string video=off\
  console=ttyS0,115200
-
 # Load firmware before detecting network cards
 d-i hw-detect/load_firmware boolean true
 d-i netcfg/enable boolean true
-
 # Include non-free debian section
 base-config     apt-setup/non-free      boolean true
 EOF
