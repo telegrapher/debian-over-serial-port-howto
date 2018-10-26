@@ -119,7 +119,26 @@ This method has the disadvantage of using additional software, adding more compl
 - The software is integrated in Debian, the package name is 'simple-cdd'.
 - It makes easy to personalize the distribution, in this example I'll take the opportunity to install the non-free firmware.
 
-build-simple-ccd works with profiles, and each profile may be composed of different files:
+
+### Warming up
+
+Install the package, create the base directories and test if it works:
+```
+apt instal simple-ccd
+mkdir -p build_image/profiles
+cd build_image
+build-simple-ccd --dist stretch
+```
+
+This will create some temp files in tmp/ and the image in images/. After verifying, delete the folders.
+#### Beware, if you change the configuration, do experiments, etc ... delete the auto-created images/ and tmp/ folders to avoid errors.
+
+```
+rm -rf tmp images
+```
+
+### Configuration
+Now we will configure build-simple-ccd. build-simple-ccd works with profiles, and each profile may be composed of different files:
 - conf: The most important, profile-specific settings to be used during the ISO build.
 - preseed: Debconf questions to be loaded if the profile is used.
 - packages: Additional packages installed wihen the profile is selected.
@@ -127,11 +146,7 @@ build-simple-ccd works with profiles, and each profile may be composed of differ
 - description: One line description of the profile
 - postinst: Profile specific post-install script run in the finish-install phase of the debian-installer
 
-Create the base directories:
-```
-mkdir -p build_image/profiles
-cd build_image
-```
+
 Create the profile files for the profile 'serial-console':
 ```
 cat << EOF >> profiles/serial-console.conf
@@ -164,12 +179,12 @@ Homemade Debian GNU/Linux Stretch installer with serial console support.
 EOF
 ```
 
+### Image creation
 ```
-build-simple-cdd --conf profiles/serial-console.conf --dist stretch
+build-simple-cdd --profiles serial-console --dist stretch
 
 ```
 
-#### Beware, if you change the configuration, delete the auto-created images/ and tmp/ folders to avoid errors.
 
 
 ## Add a serial console to an already installed machine.
