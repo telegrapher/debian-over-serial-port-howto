@@ -164,7 +164,7 @@ EOF
 
 cat << EOF >> profiles/serial-console.preseed
 # Disable video and enable serial console
-d-i debian-installer/add-kernel-opts string video=off\
+d-i debian-installer/add-kernel-opts string vga=off\
  console=ttyS0,115200
 # Load firmware before detecting network cards
 d-i hw-detect/load_firmware boolean true
